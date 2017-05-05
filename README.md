@@ -5,4 +5,4 @@
 
 1. [Introducción](/docs/01INTRODUCCION.md)
 2. [Configurar Sass](/docs/02SASS.md)
-3. [Configurar Bootstrap](/docs/03BOOTSRTAP.md)
+3. [Configurar Bootstrap](/docs/03BOOTSTRAP.md)
