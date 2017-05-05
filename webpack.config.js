@@ -7,7 +7,13 @@ const basePath = __dirname;
 module.exports = {
 	entry: {
 		app: './src/main.js',
-		styles: './src/content/main.scss'
+		styles: './src/content/sass/main.scss',
+		vendor: [
+			'jquery'
+		],
+		vendorStyles: [
+			'bootstrap-loader/extractStyles'
+		]
 	},
 	output: {
 		path: path.join(basePath, 'dist'),
@@ -20,19 +26,40 @@ module.exports = {
 				loader: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
 					use: [
-						{loader: 'css-loader'},
-						{loader: 'sass-loader'}
+						{ loader: 'css-loader' },
+						{ loader: 'sass-loader' },
+						{
+							loader: 'sass-resources-loader',
+							options: {
+								resources: [
+									'node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_mixins',
+									'src/content/sass/bootstrap/_variables.scss'
+								]
+							}
+						}
 					]
 				})
-			}
+			},
+			{
+				test: /\.(woff2?|svg)$/,
+				loader: 'url-loader?limit=10000'
+			},
+			{
+				test: /\.(ttf|eot)$/,
+				loader: 'file-loader'
+			},
 		]
 	},
 	devServer: {
 		port: 8080
 	},
 	plugins: [
+		new webpack.ProvidePlugin({
+			$: 'jquery',
+			jQuery: 'jquery'
+		}),
 		new webpack.optimize.CommonsChunkPlugin({
-			names: ['styles','manifest']
+			names: ['styles', 'vendor', 'vendorStyles', 'manifest']
 		}),
 		new HtmlWebpackPlugin({
 			filename: 'index.html', //Name of file in .dist
@@ -44,4 +71,4 @@ module.exports = {
 			allChunks: true
 		})
 	]
-}
+};
